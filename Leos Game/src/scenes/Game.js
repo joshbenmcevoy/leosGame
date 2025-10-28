@@ -20,16 +20,23 @@ export class Game extends Phaser.Scene {
 
         if(keyboard.right.isDown){
             this.player.setVelocityX(160);
+            this.player.anims.play('moveRight', true);
         }
         else if(keyboard.left.isDown){
             this.player.setVelocityX(-160);
+            this.player.anims.play('moveLeft', true);
         }
         else{
             this.player.setVelocityX(0);
+            this.player.anims.play('turn', true);
         }
 
         if(keyboard.up.isDown && this.player.body.touching.down){
             this.player.setVelocityY(-200);
+            
+        }
+        else if(keyboard.up.isDown && !this.player.body.touching.down){
+            this.player.anims.play('jump', true);
         }
     }
 
@@ -43,6 +50,50 @@ export class Game extends Phaser.Scene {
         this.createPlatforms();
         this.createPlayer();
         this.setCollisions();
+
+        this.anims.create({
+            key: 'moveLeft',
+            frames: this.anims.generateFrameNumbers('ash', {
+                start: 5,
+                end: 9,
+            }),
+            frameRate: 10,
+            repeat: -1,
+        })
+
+        this.anims.create({
+            key: 'moveRight',
+            frames: this.anims.generateFrameNumbers('ash', {
+                start: 15,
+                end: 19,
+            }),
+            frameRate: 10,
+            repeat: -1,
+        })
+
+        this.anims.create({
+            key: 'turn',
+            frames: [{
+                key: 'ash',
+                frame: 0,
+            }],
+            frameRate: 20,
+        })
+
+        this.anims.create({
+            key: 'jump',
+            frames: [{
+                key: 'ash',
+                frame: 16,
+            }],
+            frameRate: 20,
+        })
+
+        // this.anims.create({
+        //     key: 'jump',
+        //     frames: [{key: 'ash', frame: 6}],
+        //     frameRate: 20
+        // })
     }
 
     update(time) {
