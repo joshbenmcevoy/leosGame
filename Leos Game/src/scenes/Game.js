@@ -35,8 +35,14 @@ export class Game extends Phaser.Scene {
             this.player.setVelocityY(-200);
             
         }
-        else if(keyboard.up.isDown && !this.player.body.touching.down){
-            this.player.anims.play('jump', true);
+        else if (keyboard.left.isDown && !this.player.body.touching.down){
+            this.player.anims.play('jumpLeft', true);
+        }
+        else if (keyboard.right.isDown && !this.player.body.touching.down){
+            this.player.anims.play('jumpRight', true);
+        }
+        else if (!this.player.body.blocked.down && this.player.body.velocity.y > 0) {
+            this.player.anims.play('fall', true);
         }
     }
 
@@ -72,16 +78,25 @@ export class Game extends Phaser.Scene {
         })
 
         this.anims.create({
+            key: 'fall',
+            frames: this.anims.generateFrameNumbers('ash', {
+                start: 1,
+                end: 4,
+            }),
+            frameRate: 10,
+            repeat: -1,
+        })
+
+        this.anims.create({
             key: 'turn',
             frames: [{
                 key: 'ash',
                 frame: 0,
             }],
-            frameRate: 20,
         })
 
         this.anims.create({
-            key: 'jump',
+            key: 'jumpRight',
             frames: [{
                 key: 'ash',
                 frame: 16,
@@ -89,11 +104,14 @@ export class Game extends Phaser.Scene {
             frameRate: 20,
         })
 
-        // this.anims.create({
-        //     key: 'jump',
-        //     frames: [{key: 'ash', frame: 6}],
-        //     frameRate: 20
-        // })
+        this.anims.create({
+            key: 'jumpLeft',
+            frames: [{
+                key: 'ash',
+                frame: 6,
+            }],
+            frameRate: 20,
+        })
     }
 
     update(time) {
