@@ -15,11 +15,13 @@ export class Preloader extends Phaser.Scene {
             frameWidth: 50,
             frameHeight: 50,
         });
-
+        this.load.spritesheet('pokemon', 'pokemon.png', {
+            frameWidth: 60,
+            frameHeight: 60,
+        });
     
         this.load.image('background', 'background.png');
         this.load.image('pokeballs', 'pokeballs.png');
-        this.load.image('pokemon', 'pokemon.png');
         this.load.image('sky', 'sky.png');
         this.load.image('platform', 'platform.png');
 

@@ -46,8 +46,37 @@ export class Game extends Phaser.Scene {
         }
     }
 
+    getRandomFloat(min, max) {
+        min = Math.ceil(min); // Ensure min is an integer
+        max = Math.floor(max); // Ensure max is an integer
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    createPokemon(){
+        const frameWidth = 800;
+        const frameLength = 600;
+        const randomX = this.getRandomFloat(0, frameWidth);
+        const randomY = this.getRandomFloat(0, frameLength);
+
+        const randomFrame = this.getRandomFloat(0, 150);
+        console.log(randomFrame)
+
+        let pokemon = this.physics.add.sprite(randomX, randomY, 'pokemon');
+        pokemon.setCollideWorldBounds(true);
+        this.anims.create({
+            key: `pokemonAnims${randomFrame}`, 
+            frames: [{
+                key: 'pokemon',
+                frame: randomFrame,
+            }]
+        })
+        pokemon.anims.play(`pokemonAnims${randomFrame}`, true);
+        this.physics.add.collider(pokemon, this.platforms);
+    }
+
     setCollisions(){
         this.physics.add.collider(this.player, this.platforms);
+        
     }
     
     create(){
@@ -55,6 +84,8 @@ export class Game extends Phaser.Scene {
         
         this.createPlatforms();
         this.createPlayer();
+        this.createPokemon();
+        this.createPokemon();
         this.setCollisions();
 
         this.anims.create({
