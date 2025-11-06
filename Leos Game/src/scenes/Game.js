@@ -7,6 +7,10 @@ export class Game extends Phaser.Scene {
         this.platforms = this.physics.add.staticGroup();
         this.platforms.create(208, 588, 'platform');
         this.platforms.create(592, 588, 'platform');
+        this.platforms.create(700, 288, 'platform');
+        this.platforms.create(80, 498, 'platform');
+        this.platforms.create(25, 254, 'platform');
+        this.platforms.create(625, 450, 'platform');
     }
 
     createPlayer(){
