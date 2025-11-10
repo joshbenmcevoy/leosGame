@@ -19,9 +19,8 @@ export class Game extends Phaser.Scene {
         this.player.setBounce(0.2);
     }
 
-    createControls(){
+    updateControls(){
         let keyboard = this.input.keyboard.createCursorKeys();
-
         if(keyboard.right.isDown){
             this.player.setVelocityX(160);
             this.player.anims.play('moveRight', true);
@@ -63,7 +62,6 @@ export class Game extends Phaser.Scene {
         const randomY = this.getRandomFloat(0, frameLength);
 
         const randomFrame = this.getRandomFloat(0, 150);
-        console.log(randomFrame)
 
         let pokemon = this.physics.add.sprite(randomX, randomY, 'pokemon');
         pokemon.setCollideWorldBounds(true);
@@ -76,11 +74,17 @@ export class Game extends Phaser.Scene {
         })
         pokemon.anims.play(`pokemonAnims${randomFrame}`, true);
         this.physics.add.collider(pokemon, this.platforms);
+        this.physics.add.overlap(this.player, pokemon, () => this.handlePlayerPokemonCollision(pokemon), null, this);
     }
 
     setCollisions(){
         this.physics.add.collider(this.player, this.platforms);
-        
+    }
+
+    handlePlayerPokemonCollision(pokemon){
+        if(pokemon.destroy){
+            pokemon.destroy();
+        } 
     }
     
     create(){
@@ -88,6 +92,8 @@ export class Game extends Phaser.Scene {
         
         this.createPlatforms();
         this.createPlayer();
+        this.createPokemon();
+        this.createPokemon();
         this.createPokemon();
         this.createPokemon();
         this.setCollisions();
@@ -150,7 +156,7 @@ export class Game extends Phaser.Scene {
     }
 
     update(time) {
-        this.createControls();
+        this.updateControls();
     }
 
 }
